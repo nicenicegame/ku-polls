@@ -4,4 +4,5 @@ li a {
 
 body {
     background: white url("images/background.gif") no-repeat;
+    background-size: 100vw 100vh;
 }
