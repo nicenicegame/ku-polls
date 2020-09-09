@@ -5,11 +5,15 @@
 <link rel="stylesheet" type="text/css" href="{% static 'polls/style.css' %}">
 
 <h1 class="mb-4 text-center">KU Polls</h1>
-<h4>Available Polls</h4>
+<h4 class="d-inline">Available Polls</h4>
+<p class="d-inline float-right">Pub. Date</p>
 {% if latest_question_list %}
-    <div class="list-group">
+    <div class="list-group mt-3">
     {% for question in latest_question_list %}
-        <a href="{% url 'polls:detail' question.id %}" class="list-group-item list-group-item-action">{{ question.question_text }}</a>
+        <a href="{% url 'polls:detail' question.id %}" class="list-group-item list-group-item-action">
+            {{ question.question_text }}
+            <small class="float-right">{{ question.pub_date|date:"SHORT_DATE_FORMAT" }}</small>
+        </a>
     {% endfor %}
     </div>
 {% else %}
