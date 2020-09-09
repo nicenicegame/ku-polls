@@ -1,9 +1,16 @@
-<h1>{{ question.question_text }}</h1>
+{% extends 'polls/main.html' %}
+{% block content %}
 
-<ul>
+<h1 class="mb-3">{{ question.question_text }} - Results</h1>
+
+<ul class="list-group mb-3">
 {% for choice in question.choice_set.all %}
-    <li>{{ choice.choice_text }} -- {{ choice.votes }} vote{{ choice.votes|pluralize }}</li>
+    <li class="list-group-item">{{ choice.choice_text }} <span class="badge badge-info">{{ choice.votes }} vote{{ choice.votes|pluralize }}</span></li>
 {% endfor %}
 </ul>
 
-<a href="{% url 'polls:detail' question.id %}">Vote again?</a>
+<div class="alert alert-success" role="alert">
+  Vote successfully. Click <a href="{% url 'polls:detail' question.id %}" class="alert-link">here</a> to vote again.
+</div>
+
+{% endblock %}
