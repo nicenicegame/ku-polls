@@ -6,4 +6,4 @@ Web application for conducting online polls and surveys.
 
 * [Vision Statement](../../wiki/Vision%20Statement)
 * [Requirement](../../wiki/Requirements)    
-* [Iteration Plan 1](../../wiki/Iteration%20Plan%201)
+* [Iteration 1 Plan](../../wiki/Iteration%201%20Plan)
