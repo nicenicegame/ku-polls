@@ -4,10 +4,19 @@
 
 <link rel="stylesheet" type="text/css" href="{% static 'polls/style.css' %}">
 
+{% if messages %}
+    {% for message in messages %}
+    <div class="alert alert-warning {{ message.info }}" role="alert">
+        {{ message }}
+    </div>
+    {% endfor %}
+{% endif %}
+
 <h1 class="mb-4 text-center">KU Polls</h1>
-<h4 class="d-inline">Available Polls</h4>
-<p class="d-inline float-right">Pub. Date</p>
+
 {% if latest_question_list %}
+    <h4 class="d-inline">Available Polls</h4>
+    <p class="d-inline float-right">Pub. Date</p>
     <div class="list-group mt-3">
     {% for question in latest_question_list %}
         <a href="{% url 'polls:detail' question.id %}" class="list-group-item list-group-item-action">
@@ -17,7 +26,7 @@
     {% endfor %}
     </div>
 {% else %}
-    <p>No polls are available.</p>
+    <p class="mt-5 text-center">No polls are available.</p>
 {% endif %}
 
 {% endblock %}
