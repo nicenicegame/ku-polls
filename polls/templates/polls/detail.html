@@ -3,7 +3,13 @@
 
 <h1 class="mb-3">{{ question.question_text }}</h1>
 
-{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+{% if messages %}
+    {% for message in messages %}
+        <div class="alert alert-info {{ message.info }}" role="alert">
+            {{ message }}
+        </div>
+    {% endfor %}
+{% endif %}
 
 <form action="{% url 'polls:vote' question.id %}" method="post" class="form-group">
 {% csrf_token %}

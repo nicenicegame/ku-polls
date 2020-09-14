@@ -3,10 +3,12 @@
 
 <h3 class="mb-3">{{ question.question_text }} - Results</h3>
 
-{% if question.can_vote %}
-    <div class="alert alert-success" role="alert">
-      Vote successfully. Click <a href="{% url 'polls:detail' question.id %}" class="alert-link">here</a> to vote again.
+{% if question.can_vote and messages %}
+    {% for message in messages %}
+    <div class="alert alert-success {{ message.success }}" role="alert">
+        {{ message|safe }}
     </div>
+    {% endfor %}
 {% endif %}
 
 <ul class="list-group mb-3">

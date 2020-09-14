@@ -59,11 +59,12 @@ def vote(request, question_id):
     try:
         selected_choice = question.choice_set.get(pk=request.POST['choice'])
     except (KeyError, Choice.DoesNotExist):
-        return render(request, 'polls/detail.html', {
-            'question': question,
-            'error_message': "You didn't select a choice.",
-        })
+        messages.error(request, "Please select one choice below for voting.")
+        return render(request, 'polls/detail.html', {'question': question})
     else:
         selected_choice.votes += 1
         selected_choice.save()
+        vote_again_url = reverse('polls:detail', args=(question_id,))
+        vote_again_url_with_html = f'<a href="{vote_again_url}">here</a>'
+        messages.success(request, 'Vote successfully. Click ' + vote_again_url_with_html + ' to vote again.')
         return HttpResponseRedirect(reverse('polls:results', args=(question_id,)))
