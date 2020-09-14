@@ -106,6 +106,44 @@ class QuestionModelTests(TestCase):
         recent_question = Question(pub_date=time)
         self.assertIs(recent_question.was_published_recently(), True)
 
+    def test_is_published_with_past_question(self):
+        """
+        is_published() returns True for question whose pub_date
+        is in the paste.
+        """
+        time = timezone.now() - datetime.timedelta(days=5)
+        past_question = Question(pub_date=time)
+        self.assertIs(past_question.is_published(), True)
+
+    def test_is_published_with_future_question(self):
+        """
+        is_published() returns False for question whose pub_date
+        is in the future.
+        """
+        time = timezone.now() + datetime.timedelta(hours=3)
+        future_question = Question(pub_date=time)
+        self.assertIs(future_question.is_published(), False)
+
+    def test_can_vote_with_past_question(self):
+        """
+        can_vote() returns False for question whose closed (pub_date
+        and end_date are in the past).
+        """
+        time = timezone.now() - datetime.timedelta(days=3)
+        end_time = timezone.now() - datetime.timedelta(days=1)
+        past_question = Question(pub_date=time, end_date=end_time)
+        self.assertIs(past_question.can_vote(), False)
+
+    def test_can_vote_with_future_question(self):
+        """
+        can_vote() returns False for question whose not opened yet (pub_date
+        and end_date are in the future).
+        """
+        time = timezone.now() + datetime.timedelta(days=1)
+        end_time = timezone.now() + datetime.timedelta(days=3)
+        future_question = Question(pub_date=time, end_date=end_time)
+        self.assertIs(future_question.can_vote(), False)
+
 
 class QuestionDetailViewTests(TestCase):
     def test_future_question(self):
