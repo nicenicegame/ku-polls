@@ -10,18 +10,24 @@ from .models import Question, Choice
 
 # Create your views here.
 
-class IndexView(generic.ListView):
-    template_name = 'polls/index.html'
-    context_object_name = 'latest_question_list'
 
-    def get_queryset(self):
-        """
-        Return the last five published questions (not including those set to be
-        published in the future).
-        """
-        return Question.objects.filter(
-            pub_date__lte=timezone.now()
-        ).order_by('-pub_date')[:5]
+def index(request):
+    questions = Question.objects.all().order_by('-pub_date')
+    return render(request, 'polls/index.html', {'questions': questions})
+
+
+# class IndexView(generic.ListView):
+#     template_name = 'polls/index.html'
+#     context_object_name = 'latest_question_list'
+#
+#     def get_queryset(self):
+#         """
+#         Return the last five published questions (not including those set to be
+#         published in the future).
+#         """
+#         return Question.objects.filter(
+#             pub_date__lte=timezone.now()
+#         ).order_by('-pub_date')[:5]
 
 
 def detail(request, pk):

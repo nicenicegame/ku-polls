@@ -14,7 +14,7 @@
 
 <h1 class="mb-4 text-center">KU Polls</h1>
 
-{% if latest_question_list %}
+{% if questions %}
     <div class="row">
         <div class="col-12 col-md-8">
             <h4 class="d-inline">Available Polls</h4>
@@ -22,7 +22,7 @@
         </div>
     </div>
     <ul class="list-group mt-3">
-    {% for question in latest_question_list %}
+    {% for question in questions %}
         <div class="row">
             <div class="col-12 col-md-8">
                 <li class="list-group-item">
