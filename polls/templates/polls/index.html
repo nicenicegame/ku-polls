@@ -36,7 +36,7 @@
                     class="btn btn-success {% if not question.can_vote %}disabled{% endif %} btn-block">Vote</a>
             </div>
             <div class="col-6 col-md-2 pt-1">
-                <a href="{% url 'polls:results' question.id %}" class="btn btn-danger btn-block">Result</a>
+                <a href="{% url 'polls:results' question.id %}" class="btn btn-primary btn-block">Result</a>
             </div>
         </div>
     {% endfor %}
