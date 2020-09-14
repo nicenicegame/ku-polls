@@ -3,6 +3,10 @@
 
 <h3 class="mb-3">{{ question.question_text }} - Results</h3>
 
+<div class="alert alert-success" role="alert">
+  Vote successfully. Click <a href="{% url 'polls:detail' question.id %}" class="alert-link">here</a> to vote again.
+</div>
+
 <ul class="list-group mb-3">
 {% for choice in question.choice_set.all %}
     <li class="list-group-item">
@@ -11,9 +15,6 @@
     </li>
 {% endfor %}
 </ul>
-
-<div class="alert alert-success" role="alert">
-  Vote successfully. Click <a href="{% url 'polls:detail' question.id %}" class="alert-link">here</a> to vote again.
-</div>
+<a class="btn btn-danger float-right" href="{% url 'polls:index' %}">Back to List of Polls</a>
 
 {% endblock %}

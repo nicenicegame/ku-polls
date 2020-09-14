@@ -15,16 +15,31 @@
 <h1 class="mb-4 text-center">KU Polls</h1>
 
 {% if latest_question_list %}
-    <h4 class="d-inline">Available Polls</h4>
-    <p class="d-inline float-right">Pub. Date</p>
-    <div class="list-group mt-3">
-    {% for question in latest_question_list %}
-        <a href="{% url 'polls:detail' question.id %}" class="list-group-item list-group-item-action">
-            {{ question.question_text }}
-            <small class="float-right">{{ question.pub_date|date:"SHORT_DATE_FORMAT" }}</small>
-        </a>
-    {% endfor %}
+    <div class="row">
+        <div class="col-12 col-md-8">
+            <h4 class="d-inline">Available Polls</h4>
+            <p class="d-inline float-right">Pub. Date</p>
+        </div>
     </div>
+    <ul class="list-group mt-3">
+    {% for question in latest_question_list %}
+        <div class="row">
+            <div class="col-12 col-md-8">
+                <li class="list-group-item">
+                    {{ question.question_text }}
+                    <small class="float-right">{{ question.pub_date|date:"SHORT_DATE_FORMAT" }}</small>
+                </li>
+            </div>
+            <div class="col-6 col-md-2 pt-1">
+                <a
+                    href="{% url 'polls:vote' question.id %}"
+                    class="btn btn-success {% if not question.can_vote %}disabled{% endif %} btn-block">Vote</a>
+            </div>
+            <div class="col-6 col-md-2 pt-1">
+                <a href="{% url 'polls:results' question.id %}" class="btn btn-danger btn-block">Result</a>
+            </div>
+        </div>
+    {% endfor %}
 {% else %}
     <p class="mt-5 text-center">No polls are available.</p>
 {% endif %}
