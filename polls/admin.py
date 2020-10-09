@@ -1,3 +1,4 @@
+"""Create custom admin page."""
 from django.contrib import admin
 
 from .models import Question, Choice
@@ -7,11 +8,15 @@ from .models import Question, Choice
 
 
 class ChoiceInline(admin.TabularInline):
+    """Can add choice in question with default 3 fields."""
+
     model = Choice
     extra = 3
 
 
 class QuestionAdmin(admin.ModelAdmin):
+    """Custom question fields in admin page."""
+
     fieldsets = [
         (None, {'fields': ['question_text']}),
         ('Date information', {'fields': ['pub_date', 'end_date'], 'classes': ['collapse']})

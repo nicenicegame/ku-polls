@@ -1,3 +1,4 @@
+"""Create Polls application view."""
 from django.contrib import messages
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404, redirect
@@ -11,25 +12,23 @@ from .models import Question, Choice
 
 
 def index(request):
+    """View for polls index page.
+
+    Return:
+        Render HTML index page with context of all questions.
+    """
     questions = Question.objects.all().order_by('-pub_date')
     return render(request, 'polls/index.html', {'questions': questions})
 
 
-# class IndexView(generic.ListView):
-#     template_name = 'polls/index.html'
-#     context_object_name = 'latest_question_list'
-#
-#     def get_queryset(self):
-#         """
-#         Return the last five published questions (not including those set to be
-#         published in the future).
-#         """
-#         return Question.objects.filter(
-#             pub_date__lte=timezone.now()
-#         ).order_by('-pub_date')[:5]
-
-
 def detail(request, pk):
+    """View for polls detail page.
+
+    Arguments:
+        pk - primary key (id) of the question.
+    Return:
+        Render HTML detail page with context of selected question by id.
+    """
     question = get_object_or_404(Question, pk=pk)
     if not question.can_vote():
         messages.info(request, 'Voting is not allowed!')
@@ -37,23 +36,22 @@ def detail(request, pk):
     return render(request, 'polls/detail.html', {'question': question})
 
 
-# class DetailView(generic.DetailView):
-#     model = Question
-#     template_name = 'polls/detail.html'
-#
-#     def get_queryset(self):
-#         """
-#         Excludes any questions that aren't published yet.
-#         """
-#         return Question.objects.filter(pub_date__lte=timezone.now())
-
-
 class ResultsView(generic.DetailView):
+    """Result view for polls. This page display all question choices and their votes."""
+
     model = Question
     template_name = 'polls/results.html'
 
 
 def vote(request, question_id):
+    """Vote for the selected choice in question.
+
+    Arguments:
+        question_id - is id of the question.
+    Return:
+        If the choice is valid, redirect to results page.
+        If not, render the detail page.
+    """
     question = get_object_or_404(Question, pk=question_id)
     try:
         selected_choice = question.choice_set.get(pk=request.POST['choice'])
