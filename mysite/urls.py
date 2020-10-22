@@ -20,5 +20,6 @@ from . import views
 urlpatterns = [
     path('', views.index, name="main"),
     path('polls/', include('polls.urls')),
+    path('accounts/', include('django.contrib.auth.urls')),
     path('admin/', admin.site.urls),
 ]
