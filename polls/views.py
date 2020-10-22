@@ -3,7 +3,6 @@ from django.contrib import messages
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse
-from django.views import generic
 
 from .models import Question, Choice
 
@@ -21,7 +20,7 @@ def index(request):
     return render(request, 'polls/index.html', {'questions': questions})
 
 
-def detail(request, pk):
+def detail(request, question_id):
     """View for polls detail page.
 
     Arguments:
@@ -29,18 +28,17 @@ def detail(request, pk):
     Return:
         Render HTML detail page with context of selected question by id.
     """
-    question = get_object_or_404(Question, pk=pk)
+    question = get_object_or_404(Question, pk=question_id)
     if not question.can_vote():
         messages.info(request, 'Voting is not allowed!')
         return redirect('polls:index')
     return render(request, 'polls/detail.html', {'question': question})
 
 
-class ResultsView(generic.DetailView):
+def results(request, question_id):
     """Result view for polls. This page display all question choices and their votes."""
-
-    model = Question
-    template_name = 'polls/results.html'
+    question = Question.objects.get(pk=question_id)
+    return render(request, 'polls/results.html', {'question': question})
 
 
 def vote(request, question_id):
