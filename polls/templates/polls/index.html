@@ -12,7 +12,10 @@
     {% endfor %}
 {% endif %}
 
-<h1 class="mb-4 text-center">KU Polls</h1>
+<h1 class="mb-4 d-inline">KU Polls</h1>
+{% if user %}
+    <small class="text-muted d-inline float-right">Hello, {{ user.username }}</small>
+{% endif %}
 
 {% if questions %}
     <div class="row">
