@@ -57,8 +57,7 @@ def vote(request, question_id):
         messages.error(request, "Please select one choice below for voting.")
         return render(request, 'polls/detail.html', {'question': question})
     else:
-        selected_choice.votes += 1
-        selected_choice.save()
+        selected_choice.vote_set.create(user=request.user)
         vote_again_url = reverse('polls:detail', args=(question_id,))
         vote_again_url_with_html = f'<a href="{vote_again_url}">here</a>'
         messages.success(request, 'Vote successfully. Click ' + vote_again_url_with_html + ' to vote again.')
