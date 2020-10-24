@@ -13,7 +13,7 @@
 {% endif %}
 
 <h1 class="mb-4 d-inline">KU Polls</h1>
-{% if user %}
+{% if user.is_authenticated %}
     <small class="text-muted d-inline float-right">Hello, {{ user.username }}</small>
 {% endif %}
 
@@ -36,7 +36,7 @@
             <div class="col-6 col-md-2 pt-1">
                 <a
                     href="{% url 'polls:detail' question.id %}"
-                    class="btn btn-success {% if not question.can_vote %}disabled{% endif %} btn-block">Vote</a>
+                    class="btn btn-success {% if not question.can_vote or not user.is_authenticated %}disabled{% endif %} btn-block">Vote</a>
             </div>
             <div class="col-6 col-md-2 pt-1">
                 <a href="{% url 'polls:results' question.id %}" class="btn btn-primary btn-block">Result</a>
