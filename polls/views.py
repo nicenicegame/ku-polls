@@ -33,7 +33,11 @@ def detail(request, question_id):
     if not question.can_vote():
         messages.info(request, 'Voting is not allowed!')
         return redirect('polls:index')
-    return render(request, 'polls/detail.html', {'question': question})
+    try:
+        previous_choice = question.vote_set.get(user=request.user).choice
+    except (KeyError, Vote.DoesNotExist):
+        return render(request, 'polls/detail.html', {'question': question})
+    return render(request, 'polls/detail.html', {'question': question, 'previous_choice': previous_choice})
 
 
 def results(request, question_id):
@@ -59,8 +63,8 @@ def vote(request, question_id):
         messages.error(request, "Please select one choice below for voting.")
         return render(request, 'polls/detail.html', {'question': question})
     else:
-        if question.vote_set.filter(user=request.user, question=question).exists():
-            this_vote = question.vote_set.get(user=request.user, question=question)
+        if question.vote_set.filter(user=request.user).exists():
+            this_vote = question.vote_set.get(user=request.user)
             this_vote.choice = selected_choice
             this_vote.save()
         else:

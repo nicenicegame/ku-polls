@@ -16,6 +16,7 @@
         {% for choice in question.choice_set.all %}
             <div class="form-check">
                 <input
+                        {% if previous_choice.id == choice.id %}disabled{% endif %}
                         type="radio"
                         name="choice"
                         id="choice{{ forloop.counter }}"
@@ -23,7 +24,9 @@
                         class="form-check-input">
                 <label
                         for="choice{{ forloop.counter }}"
-                        class="form-check-label">{{ choice.choice_text }}</label>
+                        class="form-check-label">
+                    {{ choice.choice_text }} {% if previous_choice.id == choice.id %}- previous voted choice{% endif %}
+                </label>
             </div>
             <br>
         {% endfor %}
