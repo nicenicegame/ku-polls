@@ -1,0 +1,5 @@
+{% extends 'polls/main.html' %}
+{% block content %}
+    <h2>You are logged out.</h2>
+    <p>Click <a href="{% url 'polls:index' %}">here</a> to go to index page.</p>
+{% endblock %}
