@@ -4,7 +4,7 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse
 
-from .models import Question, Choice
+from .models import Question, Choice, Vote
 
 
 # Create your views here.
@@ -57,7 +57,12 @@ def vote(request, question_id):
         messages.error(request, "Please select one choice below for voting.")
         return render(request, 'polls/detail.html', {'question': question})
     else:
-        selected_choice.vote_set.create(user=request.user)
+        if Vote.objects.filter(user=request.user, question=question).exists():
+            this_vote = Vote.objects.get(user=request.user, question=question)
+            this_vote.choice = selected_choice
+            this_vote.save()
+        else:
+            question.vote_set.create(user=request.user, choice=selected_choice)
         vote_again_url = reverse('polls:detail', args=(question_id,))
         vote_again_url_with_html = f'<a href="{vote_again_url}">here</a>'
         messages.success(request, 'Vote successfully. Click ' + vote_again_url_with_html + ' to vote again.')
