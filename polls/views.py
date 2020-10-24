@@ -1,5 +1,6 @@
 """Create Polls application view."""
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse
@@ -41,6 +42,7 @@ def results(request, question_id):
     return render(request, 'polls/results.html', {'question': question})
 
 
+@login_required()
 def vote(request, question_id):
     """Vote for the selected choice in question.
 
@@ -65,5 +67,5 @@ def vote(request, question_id):
             selected_choice.vote_set.create(user=request.user, question=question)
         vote_again_url = reverse('polls:detail', args=(question_id,))
         vote_again_url_with_html = f'<a href="{vote_again_url}">here</a>'
-        messages.success(request, 'Vote successfully. Click ' + vote_again_url_with_html + ' to vote again.')
+        messages.success(request, f'Vote successfully. Click {vote_again_url_with_html} to vote again.')
         return HttpResponseRedirect(reverse('polls:results', args=(question_id,)))
