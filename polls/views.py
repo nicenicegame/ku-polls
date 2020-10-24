@@ -59,8 +59,8 @@ def vote(request, question_id):
         messages.error(request, "Please select one choice below for voting.")
         return render(request, 'polls/detail.html', {'question': question})
     else:
-        if Vote.objects.filter(user=request.user, question=question).exists():
-            this_vote = Vote.objects.get(user=request.user, question=question)
+        if question.vote_set.filter(user=request.user, question=question).exists():
+            this_vote = question.vote_set.get(user=request.user, question=question)
             this_vote.choice = selected_choice
             this_vote.save()
         else:
