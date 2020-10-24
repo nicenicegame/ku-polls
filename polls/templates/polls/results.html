@@ -1,24 +1,24 @@
 {% extends 'polls/main.html' %}
 {% block content %}
 
-<h3 class="mb-3">{{ question.question_text }} - Results</h3>
+    <h3 class="mb-3">{{ question.question_text }} - Results</h3>
 
-{% if question.can_vote and messages %}
-    {% for message in messages %}
-    <div class="alert alert-success {{ message.success }}" role="alert">
-        {{ message|safe }}
-    </div>
-    {% endfor %}
-{% endif %}
+    {% if question.can_vote and messages %}
+        {% for message in messages %}
+            <div class="alert alert-success {{ message.success }}" role="alert">
+                {{ message|safe }}
+            </div>
+        {% endfor %}
+    {% endif %}
 
-<ul class="list-group mb-3">
-{% for choice in question.choice_set.all %}
-    <li class="list-group-item">
-        {{ choice.choice_text }}
-        <span class="badge badge-info float-right">{{ choice.votes }}</span>
-    </li>
-{% endfor %}
-</ul>
-<a class="btn btn-danger float-right" href="{% url 'polls:index' %}">Back to List of Polls</a>
+    <ul class="list-group mb-3">
+        {% for choice in question.choice_set.all %}
+            <li class="list-group-item">
+                {{ choice.choice_text }}
+                <span class="badge badge-info float-right">{{ choice.votes }}</span>
+            </li>
+        {% endfor %}
+    </ul>
+    <a class="btn btn-danger float-right" href="{% url 'polls:index' %}">Back to List of Polls</a>
 
 {% endblock %}

@@ -1,0 +1,11 @@
+{% extends 'polls/main.html' %}
+{% block content %}
+    <h2 class="mb-4">Login</h2>
+    <form class="form-group" method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button class="btn btn-success" type="submit">Login</button>
+        <input type="hidden" name="next" value="{{ next }}">
+    </form>
+    <a class="btn btn-danger float-right" href="{% url 'polls:index' %}">Back</a>
+{% endblock %}
