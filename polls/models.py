@@ -62,19 +62,15 @@ class Choice(models.Model):
 
     @property
     def votes(self):
-        return self.question.choice_set.get(pk=self.pk).vote_set.count()
+        return self.question.vote_set.filter(choice=self).count()
 
 
 class Vote(models.Model):
-    choice = models.ForeignKey(
-        Choice,
-        on_delete=models.CASCADE,
-        blank=True,
-        null=True)
+    question = models.ForeignKey(Question, on_delete=models.CASCADE, default=0)
+    choice = models.OneToOneField(Choice, on_delete=models.CASCADE)
     user = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
         blank=True,
         null=True,
         default=0)
-
