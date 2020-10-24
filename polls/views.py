@@ -62,7 +62,7 @@ def vote(request, question_id):
             this_vote.choice = selected_choice
             this_vote.save()
         else:
-            question.vote_set.create(user=request.user, choice=selected_choice)
+            selected_choice.vote_set.create(user=request.user, question=question)
         vote_again_url = reverse('polls:detail', args=(question_id,))
         vote_again_url_with_html = f'<a href="{vote_again_url}">here</a>'
         messages.success(request, 'Vote successfully. Click ' + vote_again_url_with_html + ' to vote again.')

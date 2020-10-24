@@ -67,7 +67,7 @@ class Choice(models.Model):
 
 class Vote(models.Model):
     question = models.ForeignKey(Question, on_delete=models.CASCADE, default=0)
-    choice = models.OneToOneField(Choice, on_delete=models.CASCADE)
+    choice = models.ForeignKey(Choice, on_delete=models.CASCADE, default=0)
     user = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
