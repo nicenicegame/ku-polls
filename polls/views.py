@@ -1,14 +1,43 @@
 """Create Polls application view."""
+import logging.config
+
 from django.contrib import messages
+from django.contrib.auth import user_logged_in, user_logged_out, user_login_failed
 from django.contrib.auth.decorators import login_required
+from django.dispatch import receiver
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse
 
 from .models import Question, Choice, Vote
+from .settings import LOGGING
+
+logging.config.dictConfig(LOGGING)
+logger = logging.getLogger('polls')
 
 
-# Create your views here.
+def get_client_ip(request):
+    x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
+    if x_forwarded_for:
+        ip = x_forwarded_for.split(',')[0]
+    else:
+        ip = request.META.get('REMOTE_ADDR')
+    return ip
+
+
+@receiver(user_logged_in)
+def user_logged_in_callback(sender, request, user, **kwargs):
+    logger.info(f'User {user.username} logged in from {get_client_ip(request)}')
+
+
+@receiver(user_logged_out)
+def user_logged_in_callback(sender, request, user, **kwargs):
+    logger.info(f'User {user.username} logged out from {get_client_ip(request)}')
+
+
+@receiver(user_login_failed)
+def user_login_failed_callback(sender, credentials, request, **kwargs):
+    logger.warning(f'User {request.POST["username"]} login failed from {get_client_ip(request)}')
 
 
 def index(request):
@@ -71,5 +100,6 @@ def vote(request, question_id):
             selected_choice.vote_set.create(user=request.user, question=question)
         vote_again_url = reverse('polls:detail', args=(question_id,))
         vote_again_url_with_html = f'<a href="{vote_again_url}">here</a>'
+        logger.info(f'User {request.user.username} voted for question id: {question.id} from {get_client_ip(request)}')
         messages.success(request, f'Vote successfully. Click {vote_again_url_with_html} to vote again.')
         return HttpResponseRedirect(reverse('polls:results', args=(question_id,)))
