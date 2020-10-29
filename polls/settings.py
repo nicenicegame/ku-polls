@@ -1,3 +1,4 @@
+"""Logging configuration file."""
 import os
 
 LOGGING = {

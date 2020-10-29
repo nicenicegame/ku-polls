@@ -62,10 +62,16 @@ class Choice(models.Model):
 
     @property
     def votes(self):
+        """Return votes in the question."""
         return self.question.vote_set.filter(choice=self).count()
 
 
 class Vote(models.Model):
+    """Vote model for KU Polls.
+
+    Vote with its question, choice, and user.
+    """
+
     question = models.ForeignKey(Question, on_delete=models.CASCADE, default=0)
     choice = models.ForeignKey(Choice, on_delete=models.CASCADE, default=0)
     user = models.ForeignKey(
@@ -74,3 +80,7 @@ class Vote(models.Model):
         blank=True,
         null=True,
         default=0)
+
+    def __str__(self):
+        """Return which question, choice, user that voted for."""
+        return f'Vote for {self.question.question_text}, choice: {self.choice.choice_text} by {self.user.username}'

@@ -1,3 +1,4 @@
+"""Detail page tests."""
 import datetime
 
 from django.shortcuts import reverse

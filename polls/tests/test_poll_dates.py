@@ -1,3 +1,4 @@
+"""Model and poll dates tests."""
 import datetime
 
 from django.test import TestCase

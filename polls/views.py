@@ -17,6 +17,7 @@ logger = logging.getLogger('polls')
 
 
 def get_client_ip(request):
+    """Return client ip address."""
     x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
     if x_forwarded_for:
         ip = x_forwarded_for.split(',')[0]
@@ -27,16 +28,19 @@ def get_client_ip(request):
 
 @receiver(user_logged_in)
 def user_logged_in_callback(sender, request, user, **kwargs):
+    """Log the detail of user and ip address when user logged in."""
     logger.info(f'User {user.username} logged in from {get_client_ip(request)}')
 
 
 @receiver(user_logged_out)
-def user_logged_in_callback(sender, request, user, **kwargs):
+def user_logged_out_callback(sender, request, user, **kwargs):
+    """Log the detail of user and ip address when user logged out."""
     logger.info(f'User {user.username} logged out from {get_client_ip(request)}')
 
 
 @receiver(user_login_failed)
 def user_login_failed_callback(sender, credentials, request, **kwargs):
+    """Log the detail of user and ip address when user login failed."""
     logger.warning(f'User {request.POST["username"]} login failed from {get_client_ip(request)}')
 
 
@@ -70,7 +74,10 @@ def detail(request, question_id):
 
 
 def results(request, question_id):
-    """Result view for polls. This page display all question choices and their votes."""
+    """Results page for the poll question.
+
+    This page display all question choices and their votes.
+    """
     question = Question.objects.get(pk=question_id)
     return render(request, 'polls/results.html', {'question': question})
 
